@@ -67,7 +67,11 @@ class PlanController {
 
     const plan = await Plan.findByPk(id);
 
-    if (title !== plan.title && title !== undefined) {
+    if (!plan) {
+      return res.status(400).json({ error: 'Plan not found' });
+    }
+
+    if (title !== undefined && title !== plan.title) {
       const planExists = await Plan.findOne({ where: { title } });
 
       if (planExists) {
